@@ -3,52 +3,36 @@ The Adaptive Authentication project provides an automated tool to select securit
 We use a Fuzzy Causal Network (FCN) encoded using Z3 SMT solver to reason about the impact of contextual factors on security risks and requirements priorities and select an effective
 authentication method that can be applied in the given context.
 
-In this repository, we demonstrate our tool using an example from healthcare. The IoV network is a heterogeneous vehicular network combining inter-vehicle and intra-vehicle
-networks and vehicular mobile Internet. An IoV network can include users (e.g., drivers, passengers, and pedestrians), vehicles (e.g., cars, buses) and devices (e.g., mobile devices, roadside units or RSUs). We consider 3 scenarios.
+In this repository, we demonstrate our tool using an example from healthcare. Healthcare information systems manage highly sensitive, safety-critical patient data across interconnected components, including electronic health records, prescription platforms, and administrative systems. These systems are accessed by multiple users with different roles, including clinicians and administrative staff, operating under dynamic conditions such as shared workstations, remote access, shift changes, and emergency situations. We consider 3 scenarios.
 
-## Scenario 1
-The ambulance requires real-time road traffic information to reach the hospital quickly. To achieve this aim, it
-communicates with the nearest RSUs using a Vehicle-to-Roadside Units (V2R) communication topology (see Figure 1a).
-However, nearby vehicles may attempt to impersonate the ambulance to obtain road traffic information illegitimately. In
-this scenario, ensuring the confidentiality of traffic data and the authenticity of the communicating parties (ambulance
-and RSU) takes precedence over usability and performance considerations. 
-To mitigate the risk of impersonation attacks, our tool suggests to employ certificate-based authentication to authenticate the
-the ambulance with the RSU.
+## Scenario 4
+A family physician attempts to prescribe medication outside the hospital from an unknown location, over an insecure network, and at an unusual time. In this scenario, impersonation and session‑hijacking attacks are highly likely. Also, confidentiality and integrity of the prescribing action have higher priority than usability and performance goals. Thus, an effective authentication method shall reduce the likelihood of impersonation and session‑hijacking attacks and maximize the satisfaction of confidentiality and integrity requirements. 
 
-## Scenario 2
-In the second scenario, the ambulance attempts to overtake a car. This requires exchanging
-distance information between the ambulance and nearby vehicles using a Vehicle-to-Vehicle
-(V2V) communication topology. Ensuring the integrity of this distance information is critical to preventing collisions.
-Also, the exchange must happen quickly to enable the ambulance to overtake the car without delay. Here,
-performance requirements, such as minimizing authentication time, are prioritized over security and usability concerns.
-Certificate-based authentication is unsuitable in this case, as it may involve lengthy identity verification through a remote server. Instead, our tool recommends using car plates and driver's license for authentication since they offer faster authentication while reducing the risk of impersonation attacks.
-
-## Scenario 3
-In the third scenario, the ambulance driver is approaching a junction and accessing patient information through a Vehicle-to-Infrastructure
-(V2I) connection via cellular networks. Since the information is sensitive, ensuring its confidentiality is
-crucial. At the same time, usability is also a key consideration, as the authentication process should not distract the
-driver, who needs to remain focused on navigating the junction. Our tool recommends using two-factor authentication based on a biometrics-based authentication method combined with a car plate and driver's license since these are automated and do not require the driver to perform an action (e.g., type a password or swipe a card).
+## Scenario 5
+A physician in the emergency department needs to authenticate quickly to access a patient’s medical records during a critical situation using a hospital tablet connected to the internal Wi-Fi network. Because the environment is crowded and devices are shared among staff, impersonation and replay attacks are likely. Due to the emergency, the performance requirement has a higher priority than the security requirements. Thus, an effective authentication method shall reduce the likelihood of impersonation and replay attacks while satisfying the most critical goals (Performance).
+## Scenario 6
+The physician accesses the hospital system from home at night using a personal, unmanaged laptop on an unsecured Wi‑Fi network. The device lacks a fingerprint scanner, and the smart‑card reader is unavailable. Because access occurs from an untrusted device and over an insecure connection, the risk of session hijacking is high. Therefore, the security requirement has the highest priority in this context. An effective authentication method shall reduce the likelihood of session‑hijacking (and related replay) attacks to satisfy security goals, which are the most critical in this scenario.
 
 # Project Structure
 | <br />
 |-- adaptive_auth.py<br />
 |<br />
 |-- Scenario1 <br />
-&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     |-- model-zu-1.txt<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     |-- model-zu-4.txt<br />
 |<br />
 |-- Scenario2 <br />
-&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      |-- model-zu-2.txt<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      |-- model-zu-5.txt<br />
 |<br />
 |-- Scenario3<br />
- &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     |-- model-zu-3.txt<br /><br />
+ &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     |-- model-zu-6.txt<br /><br />
 
 *adaptive_auth.py* This is a bash script which computes the authentication method that provides the best utility
 
-*model-zu-1.txt* is the Z3 model representing Scenario 1
+*model-zu-4.txt* is the Z3 model representing Scenario 4
 
-*model-zu-2.txt* is the Z3 model representing Scenario 2
+*model-zu-5.txt* is the Z3 model representing Scenario 5
 
-*model-zu-3.txt* is the Z3 model representing Scenario 3
+*model-zu-6.txt* is the Z3 model representing Scenario 6
 
 # Installation Requirements
 1) Install Python v3.
@@ -57,8 +41,8 @@ driver, who needs to remain focused on navigating the junction. Our tool recomme
 
 # Run the Adaptive Authentication Scenarios
 1) Using your terminal, go to the AdaptiveAuthentication project folder.
-2) To run Scenario 1-3, respectively execute commands <br />
-  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  *python adaptive_auth.py 1* <br />
-&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  *python adaptive_auth.py 2* <br />
-&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  *python adaptive_auth.py 3*
+2) To run Scenario 4-6, respectively execute commands <br />
+  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  *python adaptive_auth.py 4* <br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  *python adaptive_auth.py 5* <br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  *python adaptive_auth.py 6*
    
